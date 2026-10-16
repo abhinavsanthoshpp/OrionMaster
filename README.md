@@ -1,6 +1,12 @@
 # PDF Master (Open-Source PDF Management App)
 
+[![Website](https://img.shields.io/badge/Website-Live_Showcase-E53935?style=for-the-badge&logo=googlechrome&logoColor=white)](https://abhinavsanthoshpp.github.io/PDFMaster/)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-PDFMaster-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/abhinavsanthoshpp/PDFMaster)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=for-the-badge)](LICENSE)
+
 An open-source, native Android PDF managing & viewing application inspired by **iLovePDF**, rebuilt from the ground up for privacy, zero account requirements, and 100% on-device processing.
+
+🌐 **Live Website**: [https://abhinavsanthoshpp.github.io/PDFMaster/](https://abhinavsanthoshpp.github.io/PDFMaster/)
 
 ---
 
