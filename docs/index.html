@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Master — The Private, 100% Free Open-Source PDF Manager for Android</title>
+  <meta name="description" content="Every tool you need to work with PDFs in one place. 100% offline, zero login or signup, open-source alternative to iLovePDF for Android.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background Orbs -->
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
+
+  <!-- Navigation -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <div class="logo-badge">📄</div>
+        <span>PDF Master</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#features">Tools</a></li>
+        <li><a href="#comparison">iLovePDF vs PDF Master</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+        <li><a href="#install">Build & Run</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">☀️</button>
+        <a href="https://github.com/abhinavsanthoshpp/PDFMaster" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-pill">
+        <span>🔒 100% On-Device Processing</span> • <span>Zero Accounts</span>
+      </div>
+      <h1 class="hero-title">Every PDF tool you need. <span>Zero tracking.</span></h1>
+      <p class="hero-desc">
+        A private, modern Android PDF managing & viewing application. Merge, split, compress, protect, watermark, and convert documents locally on your phone without ever uploading a byte to the cloud.
+      </p>
+
+      <div class="hero-btns">
+        <a href="https://github.com/abhinavsanthoshpp/PDFMaster/releases" target="_blank" class="btn-primary">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+          Download APK
+        </a>
+        <a href="#features" class="btn-secondary">
+          Explore 20+ Tools
+        </a>
+      </div>
+
+      <div class="hero-badges">
+        <div class="badge-item">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          No Login Required
+        </div>
+        <div class="badge-item">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          100% Free & Open Source
+        </div>
+        <div class="badge-item">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          Offline Capability
+        </div>
+      </div>
+    </div>
+
+    <!-- Phone Mockup -->
+    <div class="mockup-wrapper">
+      <div class="phone-mockup">
+        <div class="phone-island"></div>
+        <div class="phone-screen">
+          <div class="phone-app-header">
+            <div class="phone-app-title">PDF Master</div>
+            <div class="phone-app-sub">20+ tools • All on device</div>
+          </div>
+
+          <div class="phone-search">
+            <span>🔍</span>
+            <span>Search PDF tools…</span>
+          </div>
+
+          <div class="phone-chips">
+            <div class="phone-chip active" data-cat="all">All</div>
+            <div class="phone-chip" data-cat="organize">Organize</div>
+            <div class="phone-chip" data-cat="optimize">Optimize</div>
+            <div class="phone-chip" data-cat="convert">Convert</div>
+            <div class="phone-chip" data-cat="security">Security</div>
+          </div>
+
+          <div class="phone-grid">
+            <div class="phone-card" data-cat="organize">
+              <div class="phone-card-icon" style="background:#E53935">📑</div>
+              <div>
+                <div class="phone-card-name">Merge PDF</div>
+                <div class="phone-card-desc">Combine files</div>
+              </div>
+            </div>
+
+            <div class="phone-card" data-cat="organize">
+              <div class="phone-card-icon" style="background:#FF7043">✂️</div>
+              <div>
+                <div class="phone-card-name">Split PDF</div>
+                <div class="phone-card-desc">Separate pages</div>
+              </div>
+            </div>
+
+            <div class="phone-card" data-cat="optimize">
+              <div class="phone-card-icon" style="background:#43A047">🗜️</div>
+              <div>
+                <div class="phone-card-name">Compress</div>
+                <div class="phone-card-desc">Reduce file size</div>
+              </div>
+            </div>
+
+            <div class="phone-card" data-cat="security">
+              <div class="phone-card-icon" style="background:#FF6D00">🔒</div>
+              <div>
+                <div class="phone-card-name">Protect</div>
+                <div class="phone-card-desc">Add password</div>
+              </div>
+            </div>
+
+            <div class="phone-card" data-cat="convert">
+              <div class="phone-card-icon" style="background:#1E88E5">🖼️</div>
+              <div>
+                <div class="phone-card-name">JPG to PDF</div>
+                <div class="phone-card-desc">Images to doc</div>
+              </div>
+            </div>
+
+            <div class="phone-card" data-cat="security">
+              <div class="phone-card-icon" style="background:#FFCA28; color:#000;">🔓</div>
+              <div>
+                <div class="phone-card-name">Unlock</div>
+                <div class="phone-card-desc">Remove password</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="phone-bottom-nav">
+            <div class="phone-nav-item active">
+              <span>🏠</span>
+              <span>Home</span>
+            </div>
+            <div class="phone-nav-item">
+              <span>🕒</span>
+              <span>Recent</span>
+            </div>
+            <div class="phone-nav-item">
+              <span>⚙️</span>
+              <span>Settings</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tools Showcase Section -->
+  <section class="section" id="features">
+    <div class="section-header">
+      <span class="section-tag">Comprehensive Toolsuite</span>
+      <h2 class="section-title">Everything you need for your PDFs</h2>
+      <p class="section-desc">Designed with Material 3 & Jetpack Compose. Each tool is built directly on native Android components and Apache PDFBox.</p>
+    </div>
+
+    <div class="tool-filter-tabs">
+      <button class="tab-btn active" data-category="all">All Tools (20+)</button>
+      <button class="tab-btn" data-category="organize">Organize</button>
+      <button class="tab-btn" data-category="optimize">Optimize</button>
+      <button class="tab-btn" data-category="convert">Convert</button>
+      <button class="tab-btn" data-category="edit">Edit</button>
+      <button class="tab-btn" data-category="security">Security</button>
+    </div>
+
+    <div class="tools-grid">
+      <!-- Merge -->
+      <div class="tool-item-card" data-category="organize">
+        <div>
+          <div class="tool-icon-box" style="background: linear-gradient(135deg, #E53935, #FF5252);">📑</div>
+          <h3 class="tool-name">Merge PDF</h3>
+          <p class="tool-desc">Combine multiple PDF files into one clean document in any custom order.</p>
+        </div>
+        <span class="tool-badge">Organize</span>
+      </div>
+
+      <!-- Split -->
+      <div class="tool-item-card" data-category="organize">
+        <div>
+          <div class="tool-icon-box" style="background: linear-gradient(135deg, #FF7043, #FF8A65);">✂️</div>
+          <h3 class="tool-name">Split PDF</h3>
+          <p class="tool-desc">Separate pages, group by every N pages, or extract custom intervals (e.g., 1-4, 7-10).</p>
+        </div>
+        <span class="tool-badge">Organize</span>
+      </div>
+
+      <!-- Compress -->
+      <div class="tool-item-card" data-category="optimize">
+        <div>
+          <div class="tool-icon-box" style="background: linear-gradient(135deg, #43A047, #66BB6A);">🗜️</div>
+          <h3 class="tool-name">Compress PDF</h3>
+          <p class="tool-desc">Reduce document file size with Low, Medium, and High compression algorithms.</p>
+        </div>
+        <span class="tool-badge">Optimize</span>
+      </div>
+
+      <!-- Rotate -->
+      <div class="tool-item-card" data-category="organize">
+        <div>
+          <div class="tool-icon-box" style="background: linear-gradient(135deg, #FF5722, #FF7043);">🔄</div>
+          <h3 class="tool-name">Rotate PDF</h3>
+          <p class="tool-desc">Correct orientation for upside-down or sideways pages by 90°, 180°, or 270°.</p>
+        </div>
+        <span class="tool-badge">Organize</span>
+      </div>
+
+      <!-- Remove Pages -->
+      <div class="tool-item-card" data-category="organize">
+        <div>
+          <div class="tool-icon-box" style="background: linear-gradient(135deg, #EF5350, #E57373);">🗑️</div>
+          <h3 class="tool-name">Remove Pages</h3>
+          <p class="tool-desc">Strip unnecessary or confidential pages from any PDF document effortlessly.</p>
+        </div>
+        <span class="tool-badge">Organize</span>
+      </div>
+
+      <!-- Extract Pages -->
+      <div class="tool-item-card" data-category="organize">
+        <div>
+          <div class="tool-icon-box" style="background: linear-gradient(135deg, #F44336, #EF5350);">📤</div>
+          <h3 class="tool-name">Extract Pages</h3>
+          <p class="tool-desc">Export selected individual pages or ranges into a standalone PDF file.</p>
+        </div>
+        <span class="tool-badge">Organize</span>
+      </div>
+
+      <!-- JPG to PDF -->
+      <div class="tool-item-card" data-category="convert">
+        <div>
+          <div class="tool-icon-box" style="background: linear-gradient(135deg, #1E88E5, #42A5F5);">🖼️</div>
+          <h3 class="tool-name">JPG to PDF</h3>
+          <p class="tool-desc">Convert camera photos and gallery pictures into high quality PDF documents.</p>
+        </div>
+        <span class="tool-badge">Convert</span>
+      </div>
+
+      <!-- PDF to JPG -->
+      <div class="tool-item-card" data-category="convert">
+        <div>
+          <div class="tool-icon-box" style="background: linear-gradient(135deg, #26A69A, #4DB6AC);">📸</div>
+          <h3 class="tool-name">PDF to JPG</h3>
+          <p class="tool-desc">Render each page of your PDF into crisp JPG images at 72, 150, or 300 DPI.</p>
+        </div>
+        <span class="tool-badge">Convert</span>
+      </div>
+
+      <!-- Watermark -->
+      <div class="tool-item-card" data-category="edit">
+        <div>
+          <div class="tool-icon-box" style="background: linear-gradient(135deg, #8E24AA, #AB47BC);">💧</div>
+          <h3 class="tool-name">Add Watermark</h3>
+          <p class="tool-desc">Stamp text watermarks with control over transparency, angle, size, and color.</p>
+        </div>
+        <span class="tool-badge">Edit</span>
+      </div>
+
+      <!-- Page Numbers -->
+      <div class="tool-item-card" data-category="edit">
+        <div>
+          <div class="tool-icon-box" style="background: linear-gradient(135deg, #9C27B0, #BA68C8);">🔢</div>
+          <h3 class="tool-name">Page Numbers</h3>
+          <p class="tool-desc">Add custom page numbering across 6 grid positions with custom prefix/suffix.</p>
+        </div>
+        <span class="tool-badge">Edit</span>
+      </div>
+
+      <!-- Protect PDF -->
+      <div class="tool-item-card" data-category="security">
+        <div>
+          <div class="tool-icon-box" style="background: linear-gradient(135deg, #FF6D00, #FF9100);">🔒</div>
+          <h3 class="tool-name">Protect PDF</h3>
+          <p class="tool-desc">Encrypt documents with 128-bit AES passwords and set print/copy permissions.</p>
+        </div>
+        <span class="tool-badge">Security</span>
+      </div>
+
+      <!-- Unlock PDF -->
+      <div class="tool-item-card" data-category="security">
+        <div>
+          <div class="tool-icon-box" style="background: linear-gradient(135deg, #FFCA28, #FFE082); color: #000;">🔓</div>
+          <h3 class="tool-name">Unlock PDF</h3>
+          <p class="tool-desc">Remove password security from protected PDFs for unrestricted viewing and editing.</p>
+        </div>
+        <span class="tool-badge">Security</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Section -->
+  <section class="section" id="comparison">
+    <div class="section-header">
+      <span class="section-tag">Comparison Matrix</span>
+      <h2 class="section-title">How does it compare to iLovePDF?</h2>
+      <p class="section-desc">Traditional web services require you to trust their servers with your private documents. PDF Master keeps everything on your device.</p>
+    </div>
+
+    <div class="comparison-container">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th class="highlight">PDF Master (Open App)</th>
+            <th>iLovePDF (Web / Mobile)</th>
+            <th>Adobe Acrobat (Mobile)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Account & Sign-up</strong></td>
+            <td class="highlight"><span class="check">✓ None (Zero login)</span></td>
+            <td><span class="cross">✕ Required for limits</span></td>
+            <td><span class="cross">✕ Mandatory Adobe ID</span></td>
+          </tr>
+          <tr>
+            <td><strong>Processing Location</strong></td>
+            <td class="highlight"><span class="check">✓ 100% On-Device</span></td>
+            <td><span class="cross">✕ Cloud Servers</span></td>
+            <td><span class="cross">✕ Mixed / Cloud</span></td>
+          </tr>
+          <tr>
+            <td><strong>Offline Support</strong></td>
+            <td class="highlight"><span class="check">✓ Full Offline</span></td>
+            <td><span class="cross">✕ Requires Internet</span></td>
+            <td><span class="cross">✕ Cloud features fail offline</span></td>
+          </tr>
+          <tr>
+            <td><strong>Ads & Trackers</strong></td>
+            <td class="highlight"><span class="check">✓ Zero Ads, Zero Telemetry</span></td>
+            <td><span class="cross">✕ Ad Banners & Analytics</span></td>
+            <td><span class="cross">✕ Heavy Tracking</span></td>
+          </tr>
+          <tr>
+            <td><strong>Price & Quotas</strong></td>
+            <td class="highlight"><span class="check">✓ 100% Free Forever</span></td>
+            <td><span class="cross">✕ Freemium subscription</span></td>
+            <td><span class="cross">✕ Expensive subscription</span></td>
+          </tr>
+          <tr>
+            <td><strong>Code License</strong></td>
+            <td class="highlight"><span class="check">✓ Open Source (Apache 2.0)</span></td>
+            <td><span class="cross">✕ Proprietary</span></td>
+            <td><span class="cross">✕ Proprietary</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Privacy Callout -->
+  <section class="section" id="privacy">
+    <div class="section-header">
+      <span class="section-tag">Privacy by Design</span>
+      <h2 class="section-title">Your documents belong to you</h2>
+      <p class="section-desc">Bank statements, tax forms, IDs, and legal agreements should never be uploaded to remote web servers.</p>
+    </div>
+
+    <div class="privacy-grid">
+      <div class="privacy-card">
+        <div class="privacy-icon">🛡️</div>
+        <h3 class="privacy-title">No Data Leaves Device</h3>
+        <p class="privacy-desc">All algorithms run using Apache PDFBox for Android on your local CPU. Even if you turn off Wi-Fi and Cellular Data, all features work identically.</p>
+      </div>
+
+      <div class="privacy-card">
+        <div class="privacy-icon">🚫</div>
+        <h3 class="privacy-title">No Account, No Sign In</h3>
+        <p class="privacy-desc">No email address, no passwords, no cookies, and no social sign-ins. Just open the app and tap the tool you want.</p>
+      </div>
+
+      <div class="privacy-card">
+        <div class="privacy-icon">⚡</div>
+        <h3 class="privacy-title">No Upload & Download Delays</h3>
+        <p class="privacy-desc">Large files process instantaneously without wasting your mobile data plan or waiting in server queues during peak hours.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Build & Install -->
+  <section class="section" id="install">
+    <div class="section-header">
+      <span class="section-tag">Developer Friendly</span>
+      <h2 class="section-title">Build it from source</h2>
+      <p class="section-desc">Clone the repository and build using Android Studio or the Gradle wrapper.</p>
+    </div>
+
+    <div class="code-box">
+      <code>git clone https://github.com/abhinavsanthoshpp/PDFMaster.git</code>
+      <button class="copy-btn" onclick="copySnippet(this, 'git clone https://github.com/abhinavsanthoshpp/PDFMaster.git')">Copy</button>
+    </div>
+
+    <div class="code-box">
+      <code>./gradlew assembleDebug</code>
+      <button class="copy-btn" onclick="copySnippet(this, './gradlew assembleDebug')">Copy</button>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="section-header">
+      <span class="section-tag">FAQ</span>
+      <h2 class="section-title">Frequently Asked Questions</h2>
+    </div>
+
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Is PDF Master really 100% free?</span>
+          <span class="faq-chevron">▼</span>
+        </div>
+        <div class="faq-answer">
+          Yes. PDF Master is an open-source project licensed under Apache 2.0. There are no premium tiers, no hidden subscriptions, and no advertisements.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Can I use PDF Master to open PDFs from WhatsApp or Chrome?</span>
+          <span class="faq-chevron">▼</span>
+        </div>
+        <div class="faq-answer">
+          Yes! PDF Master registers as a system PDF handler in AndroidManifest.xml. When you tap any PDF link or attachment in another app, PDF Master appears in the app chooser.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Where are processed PDFs saved?</span>
+          <span class="faq-chevron">▼</span>
+        </div>
+        <div class="faq-answer">
+          All generated PDFs are automatically saved directly to your phone's <code>Downloads/PDFMaster/</code> folder, where you can access them via any file manager or share them via WhatsApp, Drive, and Email.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="logo">
+        <div class="logo-badge">📄</div>
+        <span>PDF Master</span>
+      </div>
+
+      <ul class="footer-links">
+        <li><a href="https://github.com/abhinavsanthoshpp/PDFMaster" target="_blank">GitHub Repository</a></li>
+        <li><a href="https://github.com/abhinavsanthoshpp/PDFMaster/issues" target="_blank">Report Issue</a></li>
+        <li><a href="https://github.com/abhinavsanthoshpp/PDFMaster/blob/main/LICENSE" target="_blank">License</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 PDF Master. Free & Open-Source Software. Built with Jetpack Compose & Kotlin.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
