@@ -19,10 +19,12 @@ import androidx.core.view.WindowCompat
 private val DarkColorScheme = darkColorScheme(
     primary = PrimaryRed,
     onPrimary = Color.White,
-    primaryContainer = PrimaryRedDark,
-    onPrimaryContainer = Color.White,
+    primaryContainer = Color(0xFF2A1519),
+    onPrimaryContainer = Color(0xFFFFB3B8),
     secondary = AccentOrange,
     onSecondary = Color.White,
+    secondaryContainer = Color(0xFF2E1B0F),
+    onSecondaryContainer = Color(0xFFFFDCC2),
     tertiary = AccentBlue,
     background = BackgroundDark,
     onBackground = TextPrimaryDark,
@@ -30,16 +32,21 @@ private val DarkColorScheme = darkColorScheme(
     onSurface = TextPrimaryDark,
     surfaceVariant = SurfaceVariantDark,
     onSurfaceVariant = TextSecondaryDark,
-    error = Color(0xFFCF6679)
+    surfaceContainer = SurfaceElevatedDark,
+    outline = BorderDark,
+    outlineVariant = BorderHighlightDark,
+    error = Color(0xFFFF5252)
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = PrimaryRed,
     onPrimary = Color.White,
-    primaryContainer = Color(0xFFFFDAD6),
-    onPrimaryContainer = Color(0xFF410002),
+    primaryContainer = Color(0xFFFFEAEC),
+    onPrimaryContainer = Color(0xFF8F0018),
     secondary = AccentOrange,
     onSecondary = Color.White,
+    secondaryContainer = Color(0xFFFFF0E6),
+    onSecondaryContainer = Color(0xFF7A3600),
     tertiary = AccentBlue,
     background = BackgroundLight,
     onBackground = TextPrimaryLight,
@@ -47,7 +54,10 @@ private val LightColorScheme = lightColorScheme(
     onSurface = TextPrimaryLight,
     surfaceVariant = SurfaceVariantLight,
     onSurfaceVariant = TextSecondaryLight,
-    error = Color(0xFFBA1A1A)
+    surfaceContainer = SurfaceElevatedLight,
+    outline = BorderLight,
+    outlineVariant = BorderHighlightLight,
+    error = Color(0xFFD32F2F)
 )
 
 @Composable
@@ -70,8 +80,10 @@ fun PDFMasterTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = Color.Transparent.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
-            WindowCompat.setDecorFitsSystemWindows(window, false)
+            window.navigationBarColor = Color.Transparent.toArgb()
+            val insetsController = WindowCompat.getInsetsController(window, view)
+            insetsController.isAppearanceLightStatusBars = !darkTheme
+            insetsController.isAppearanceLightNavigationBars = !darkTheme
         }
     }
 

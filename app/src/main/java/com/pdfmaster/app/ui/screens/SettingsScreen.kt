@@ -1,8 +1,15 @@
 package com.pdfmaster.app.ui.screens
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -11,12 +18,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.pdfmaster.app.ui.theme.*
+import com.pdfmaster.app.utils.FileUtils
 import com.pdfmaster.app.viewmodel.PDFViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
@@ -33,16 +44,32 @@ fun SettingsScreen(
     var showAboutDialog by remember { mutableStateOf(false) }
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            TopAppBar(
-                title = {
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.background,
+                tonalElevation = 0.dp
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .statusBarsPadding()
+                        .padding(horizontal = 20.dp, vertical = 14.dp)
+                ) {
                     Text(
-                        "Settings",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
+                        "Preferences",
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                    Text(
+                        "Customization & Security",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.55f)
                     )
                 }
-            )
+            }
         }
     ) { padding ->
         Column(
@@ -51,92 +78,100 @@ fun SettingsScreen(
                 .padding(padding)
                 .padding(horizontal = 16.dp)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            Spacer(Modifier.height(8.dp))
-
-            // Appearance
-            SettingsSection("Appearance") {
-                SettingsSwitchItem(
+            // Appearance Section
+            SettingsGroup(title = "Interface") {
+                SettingsSwitchRow(
                     icon = if (isDarkMode) Icons.Default.DarkMode else Icons.Default.LightMode,
-                    iconColor = Color(0xFF5C6BC0),
-                    title = "Dark Mode",
-                    subtitle = if (isDarkMode) "Dark theme enabled" else "Light theme enabled",
+                    iconColor = AccentPurple,
+                    title = "OLED Dark Mode",
+                    subtitle = if (isDarkMode) "Deep obsidian theme active" else "Alabaster light theme active",
                     checked = isDarkMode,
                     onCheckedChange = onToggleDarkMode
                 )
             }
 
-            // Storage
-            SettingsSection("Storage") {
-                SettingsClickItem(
+            // Storage & Security Section
+            SettingsGroup(title = "Storage & Engine") {
+                SettingsClickRow(
                     icon = Icons.Default.CleaningServices,
-                    iconColor = Color(0xFF43A047),
-                    title = "Clear Cache",
-                    subtitle = "Remove temporary files",
+                    iconColor = AccentGreen,
+                    title = "Clear Scratch Cache",
+                    subtitle = "Purge temporary rendering buffers",
                     onClick = { showClearCacheDialog = true }
                 )
-                SettingsClickItem(
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f),
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+                SettingsClickRow(
                     icon = Icons.Default.FolderOpen,
-                    iconColor = Color(0xFFFF6D00),
-                    title = "Output Folder",
+                    iconColor = AccentOrange,
+                    title = "Download Location",
                     subtitle = "Downloads/PDFMaster",
-                    onClick = { /* Open file manager */ }
+                    onClick = { }
+                )
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f),
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+                SettingsClickRow(
+                    icon = Icons.Default.Lock,
+                    iconColor = PrimaryRed,
+                    title = "Local Vault Protocol",
+                    subtitle = "100% on-device • Zero telemetry",
+                    onClick = { }
                 )
             }
 
-            // About
-            SettingsSection("About") {
-                SettingsClickItem(
-                    icon = Icons.Default.Info,
-                    iconColor = Color(0xFF1E88E5),
-                    title = "About PDF Master",
-                    subtitle = "Version 1.0 • Open Source",
+            // About Section
+            SettingsGroup(title = "About Software") {
+                SettingsClickRow(
+                    icon = Icons.Default.PictureAsPdf,
+                    iconColor = PrimaryRed,
+                    title = "PDF Master v1.0.1",
+                    subtitle = "Open-Source Apache 2.0 License • 120Hz Fluid Motion",
                     onClick = { showAboutDialog = true }
                 )
-                SettingsClickItem(
-                    icon = Icons.Default.Security,
-                    iconColor = Color(0xFF43A047),
-                    title = "Privacy",
-                    subtitle = "All processing done locally on your device",
-                    onClick = { }
-                )
-                SettingsClickItem(
-                    icon = Icons.Default.Star,
-                    iconColor = Color(0xFFFFCA28),
-                    title = "Rate App",
-                    subtitle = "If you love PDF Master, give us 5 stars!",
-                    onClick = { }
-                )
             }
 
-            // Info Card
-            Card(
+            // Privacy Assurance Card
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
-                )
+                shape = RoundedCornerShape(20.dp),
+                color = AccentGreen.copy(alpha = 0.08f),
+                border = BorderStroke(1.dp, AccentGreen.copy(alpha = 0.25f))
             ) {
                 Row(
-                    modifier = Modifier.padding(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.padding(18.dp),
+                    horizontalArrangement = Arrangement.spacedBy(14.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        Icons.Default.Shield,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(32.dp)
-                    )
+                    Box(
+                        modifier = Modifier
+                            .size(44.dp)
+                            .clip(CircleShape)
+                            .background(AccentGreen.copy(alpha = 0.15f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            Icons.Default.Shield,
+                            contentDescription = null,
+                            tint = AccentGreen,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
                     Column {
                         Text(
-                            "100% Private",
+                            "Absolute Privacy",
                             style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            color = AccentGreen
                         )
+                        Spacer(Modifier.height(2.dp))
                         Text(
-                            "Your PDF files never leave your device. No internet required for processing.",
+                            "Your documents are processed strictly on your CPU. No account, no cloud servers, and no tracking cookies.",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                         )
@@ -144,23 +179,23 @@ fun SettingsScreen(
                 }
             }
 
-            Spacer(Modifier.height(88.dp))
+            Spacer(Modifier.height(110.dp))
         }
     }
 
     if (showClearCacheDialog) {
         AlertDialog(
             onDismissRequest = { showClearCacheDialog = false },
-            icon = { Icon(Icons.Default.CleaningServices, null) },
-            title = { Text("Clear Cache") },
-            text = { Text("This will remove all temporary files. Your processed PDFs in Downloads will not be affected.") },
+            title = { Text("Clear Temporary Cache?", fontWeight = FontWeight.Bold) },
+            text = { Text("Temporary rendering buffers will be erased. Your saved files in the Downloads folder will not be affected.") },
             confirmButton = {
                 Button(
                     onClick = {
-                        com.pdfmaster.app.utils.FileUtils.clearCache(context)
+                        FileUtils.clearCache(context)
                         showClearCacheDialog = false
-                    }
-                ) { Text("Clear") }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryRed)
+                ) { Text("Purge Cache") }
             },
             dismissButton = {
                 TextButton(onClick = { showClearCacheDialog = false }) { Text("Cancel") }
@@ -171,48 +206,60 @@ fun SettingsScreen(
     if (showAboutDialog) {
         AlertDialog(
             onDismissRequest = { showAboutDialog = false },
-            icon = { Icon(Icons.Default.PictureAsPdf, null, tint = Color(0xFFE53935), modifier = Modifier.size(48.dp)) },
-            title = { Text("PDF Master", fontWeight = FontWeight.Bold) },
+            icon = {
+                Box(
+                    modifier = Modifier
+                        .size(56.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(PrimaryRed),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(Icons.Default.PictureAsPdf, contentDescription = null, tint = Color.White, modifier = Modifier.size(32.dp))
+                }
+            },
+            title = { Text("PDF Master", fontWeight = FontWeight.ExtraBold) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("Version 1.0")
-                    Text("A free, open-source PDF management app with 20+ tools. No login required. Your files stay on your device.")
-                    HorizontalDivider()
-                    Text("Built with:", fontWeight = FontWeight.SemiBold)
-                    Text("• Jetpack Compose + Material 3")
-                    Text("• Apache PDFBox for PDF processing")
-                    Text("• Room Database for history")
+                    Text("Version 1.0.0 • Open Source")
+                    Text("The private, 100% on-device PDF management suite designed as a modern alternative to cloud-based PDF tools.")
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f), modifier = Modifier.padding(vertical = 4.dp))
+                    Text("Engineered with:", fontWeight = FontWeight.Bold)
+                    Text("• Jetpack Compose & Material 3 (Fluid 120Hz UI)")
+                    Text("• Apache PDFBox (Native Engine)")
+                    Text("• Room DB Local Document Vault")
                 }
             },
             confirmButton = {
-                Button(onClick = { showAboutDialog = false }) { Text("Close") }
+                Button(onClick = { showAboutDialog = false }) { Text("Done") }
             }
         )
     }
 }
 
 @Composable
-fun SettingsSection(title: String, content: @Composable () -> Unit) {
+fun SettingsGroup(title: String, content: @Composable ColumnScope.() -> Unit) {
     Column {
         Text(
             title.uppercase(),
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.primary,
+            color = PrimaryRed,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp)
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = 6.dp)
         )
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(22.dp),
+            color = MaterialTheme.colorScheme.surface,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.25f)),
+            shadowElevation = 1.dp
         ) {
             Column { content() }
         }
-        Spacer(Modifier.height(4.dp))
     }
 }
 
 @Composable
-fun SettingsSwitchItem(
+fun SettingsSwitchRow(
     icon: ImageVector,
     iconColor: Color,
     title: String,
@@ -226,56 +273,83 @@ fun SettingsSwitchItem(
             .clickable { onCheckedChange(!checked) }
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         Box(
-            modifier = Modifier.size(40.dp),
+            modifier = Modifier
+                .size(38.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(iconColor.copy(alpha = 0.12f)),
             contentAlignment = Alignment.Center
         ) {
-            Icon(icon, null, tint = iconColor, modifier = Modifier.size(24.dp))
+            Icon(icon, null, tint = iconColor, modifier = Modifier.size(20.dp))
         }
         Column(modifier = Modifier.weight(1f)) {
-            Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium)
-            Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+            Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold)
+            Text(subtitle, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f))
         }
         Switch(
             checked = checked,
             onCheckedChange = onCheckedChange,
             colors = SwitchDefaults.colors(
                 checkedThumbColor = Color.White,
-                checkedTrackColor = MaterialTheme.colorScheme.primary
+                checkedTrackColor = PrimaryRed
             )
         )
     }
 }
 
 @Composable
-fun SettingsClickItem(
+fun SettingsClickRow(
     icon: ImageVector,
     iconColor: Color,
     title: String,
     subtitle: String,
     onClick: () -> Unit
 ) {
-    Row(
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 0.98f else 1f,
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
+        label = "row_scale"
+    )
+
+    Surface(
+        onClick = onClick,
+        interactionSource = interactionSource,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 14.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            },
+        color = Color.Transparent
     ) {
-        Box(modifier = Modifier.size(40.dp), contentAlignment = Alignment.Center) {
-            Icon(icon, null, tint = iconColor, modifier = Modifier.size(24.dp))
+        Row(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(38.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(iconColor.copy(alpha = 0.12f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(icon, null, tint = iconColor, modifier = Modifier.size(20.dp))
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold)
+                Text(subtitle, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f))
+            }
+            Icon(
+                Icons.Default.ChevronRight,
+                null,
+                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f),
+                modifier = Modifier.size(20.dp)
+            )
         }
-        Column(modifier = Modifier.weight(1f)) {
-            Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium)
-            Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
-        }
-        Icon(
-            Icons.Default.ChevronRight,
-            null,
-            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-        )
     }
 }

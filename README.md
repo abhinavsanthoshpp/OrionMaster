@@ -1,13 +1,13 @@
 # PDF Master (Open-Source PDF Management App)
 
-[![Release](https://img.shields.io/github/v/release/abhinavsanthoshpp/PDFMaster?style=for-the-badge&color=43A047)](https://github.com/abhinavsanthoshpp/PDFMaster/releases/tag/v1.0.0)
+[![Release](https://img.shields.io/github/v/release/abhinavsanthoshpp/PDFMaster?style=for-the-badge&color=43A047)](https://github.com/abhinavsanthoshpp/PDFMaster/releases/tag/v1.0.1)
 [![Website](https://img.shields.io/badge/Website-Live_Showcase-E53935?style=for-the-badge&logo=googlechrome&logoColor=white)](https://abhinavsanthoshpp.github.io/PDFMaster/)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-PDFMaster-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/abhinavsanthoshpp/PDFMaster)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=for-the-badge)](LICENSE)
 
 An open-source, native Android PDF managing & viewing application inspired by **iLovePDF**, rebuilt from the ground up for privacy, zero account requirements, and 100% on-device processing.
 
-📦 **Download APK**: [PDFMaster-v1.0.0-debug.apk](https://github.com/abhinavsanthoshpp/PDFMaster/releases/download/v1.0.0/PDFMaster-v1.0.0-debug.apk)  
+📦 **Download APK (v1.0.1)**: [PDFMaster-v1.0.1-debug.apk](https://github.com/abhinavsanthoshpp/PDFMaster/releases/download/v1.0.1/PDFMaster-v1.0.1-debug.apk)  
 🌐 **Live Website**: [https://abhinavsanthoshpp.github.io/PDFMaster/](https://abhinavsanthoshpp.github.io/PDFMaster/)
 
 ---
@@ -16,7 +16,7 @@ An open-source, native Android PDF managing & viewing application inspired by **
 
 1. **100% Open & Free**: No login, no sign-up, no subscriptions, no ads, and no tracking.
 2. **Offline & Private**: All PDF processing (merge, split, compress, watermark, protect, encrypt, rotate) runs strictly on-device using Apache PDFBox for Android. Documents never leave your phone.
-3. **Modern UI/UX**: Built with Jetpack Compose & Material Design 3, dynamic theming (Dark & Light mode), fluid transitions, and categorized tools.
+3. **Ultra-Premium UI/UX & 120Hz Fluid Motion**: Crafted with Jetpack Compose & Material Design 3, luxury dark obsidian styling, Bento Grid tool hierarchy, Floating Dynamic Island Dock, and responsive spring physics micro-interactions that flow like water without lag.
 4. **Full System Integration**: Registers as a system PDF viewer (`android.intent.action.VIEW`), supports Android Sharesheet, Storage Access Framework, and Scoped Storage.
 
 ---
