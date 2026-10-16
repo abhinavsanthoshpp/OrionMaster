@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Squircle Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141824"/>
+      <stop offset="50%" stop-color="#0B0D14"/>
+      <stop offset="100%" stop-color="#05060A"/>
+    </linearGradient>
+
+    <!-- Electric Crimson Primary Gradient -->
+    <linearGradient id="crimsonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF334B"/>
+      <stop offset="50%" stop-color="#FF5E3A"/>
+      <stop offset="100%" stop-color="#FF8A00"/>
+    </linearGradient>
+
+    <!-- Metallic Gold/Coral Accent -->
+    <linearGradient id="goldCoral" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF5252"/>
+      <stop offset="100%" stop-color="#FFC107"/>
+    </linearGradient>
+
+    <!-- Sheet 1 Frosted Back Layer -->
+    <linearGradient id="sheetBackGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#222B3F" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#151A27" stop-opacity="0.7"/>
+    </linearGradient>
+
+    <!-- Sheet 2 Main Front Layer -->
+    <linearGradient id="sheetFrontGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="70%" stop-color="#F1F4F9"/>
+      <stop offset="100%" stop-color="#D9E2EC"/>
+    </linearGradient>
+
+    <!-- Corner Fold Gradient -->
+    <linearGradient id="foldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFA07A"/>
+      <stop offset="40%" stop-color="#FF334B"/>
+      <stop offset="100%" stop-color="#B71C1C"/>
+    </linearGradient>
+
+    <!-- Deep Shadow Filter -->
+    <filter id="dropShadow" x="-20%" y="-20%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+
+    <filter id="innerGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#FF334B" flood-opacity="0.45"/>
+    </filter>
+
+    <!-- Subtle Bevel Border Gradient -->
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF334B" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#38435E" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#FF8A00" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Squircle Base Container -->
+  <rect x="24" y="24" width="464" height="464" rx="112" fill="url(#bgGrad)" stroke="url(#borderGrad)" stroke-width="4" filter="url(#dropShadow)"/>
+
+  <!-- Subtle Radial Glow Behind Document -->
+  <circle cx="256" cy="240" r="140" fill="url(#crimsonGrad)" opacity="0.16" filter="blur(30px)"/>
+
+  <!-- Back Document Sheet (Angled for 3D Layering) -->
+  <rect x="110" y="104" width="250" height="300" rx="28" transform="rotate(-6 235 254)" fill="url(#sheetBackGrad)" stroke="#38435E" stroke-width="2"/>
+
+  <!-- Main Front Document Sheet -->
+  <g filter="url(#dropShadow)">
+    <!-- Main Sheet Path with Top Right Chamfer for the fold -->
+    <path d="M 148 116
+             H 296
+             L 372 192
+             V 388
+             C 372 405.67 357.67 420 340 420
+             H 148
+             C 130.33 420 116 405.67 116 388
+             V 148
+             C 116 130.33 130.33 116 148 116 Z"
+          fill="url(#sheetFrontGrad)"/>
+
+    <!-- Premium Metallic Folded Corner -->
+    <path d="M 296 116
+             L 372 192
+             H 320
+             C 306.75 192 296 181.25 296 168
+             Z"
+          fill="url(#foldGrad)"
+          filter="url(#innerGlow)"/>
+
+    <!-- Fold shadow underside -->
+    <path d="M 296 192 L 372 192 L 296 168 Z" fill="#000000" opacity="0.18"/>
+
+    <!-- Red Ribbon Accent Stripe on Left -->
+    <path d="M 116 164
+             C 116 154 122 144 130 140
+             L 142 140
+             V 396
+             L 130 396
+             C 122 392 116 382 116 372
+             Z"
+          fill="url(#crimsonGrad)"/>
+
+    <!-- Center Emblem: Stylized PM Ribbon (PDF Master) -->
+    <!-- P Loop and M Stems interwoven -->
+    <g transform="translate(176, 210)" filter="url(#innerGlow)">
+      <!-- Left Stem of P / M -->
+      <path d="M 16 0
+               C 22.6 0 28 5.4 28 12
+               V 136
+               C 28 142.6 22.6 148 16 148
+               C 9.4 148 4 142.6 4 136
+               V 12
+               C 4 5.4 9.4 0 16 0 Z"
+            fill="url(#crimsonGrad)"/>
+
+      <!-- P Bowl (Right Curved Loop) -->
+      <path d="M 24 4
+               H 74
+               C 98.3 4 118 23.7 118 48
+               C 118 72.3 98.3 92 74 92
+               H 24
+               V 68
+               H 74
+               C 85 68 94 59 94 48
+               C 94 37 85 28 74 28
+               H 24
+               Z"
+            fill="url(#crimsonGrad)"/>
+
+      <!-- Stylized M Diagonal Crest (Golden Flame) -->
+      <path d="M 68 36
+               L 106 82
+               C 110 87 118 87 122 82
+               L 156 40
+               C 160 35 168 38 168 45
+               V 136
+               C 168 142.6 162.6 148 156 148
+               C 149.4 148 144 142.6 144 136
+               V 76
+               L 122 102
+               C 114 112 98 112 90 102
+               L 56 62
+               Z"
+            fill="url(#goldCoral)"/>
+    </g>
+
+    <!-- Horizontal Document Text Placeholder Bars (Sleek minimalist lines) -->
+    <rect x="160" y="380" width="90" height="7" rx="3.5" fill="#A0AEC0" opacity="0.6"/>
+    <rect x="262" y="380" width="70" height="7" rx="3.5" fill="url(#crimsonGrad)" opacity="0.8"/>
+  </g>
+
+  <!-- Sparkle Accent (Top Right) -->
+  <path d="M 404 110
+           C 404 122 414 132 426 132
+           C 414 132 404 142 404 154
+           C 404 142 394 132 382 132
+           C 394 132 404 122 404 110 Z"
+        fill="#FFD700" filter="url(#innerGlow)"/>
+
+  <!-- Sparkle Accent (Bottom Left) -->
+  <path d="M 88 380
+           C 88 388 94 394 102 394
+           C 94 394 88 400 88 408
+           C 88 400 82 394 74 394
+           C 82 394 88 388 88 380 Z"
+        fill="#FF334B" opacity="0.8"/>
+</svg>

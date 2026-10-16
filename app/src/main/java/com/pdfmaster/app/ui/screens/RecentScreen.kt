@@ -37,7 +37,6 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecentScreen(
     navController: NavController,
@@ -48,70 +47,30 @@ fun RecentScreen(
     var showClearDialog by remember { mutableStateOf(false) }
 
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
-        topBar = {
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.background,
-                tonalElevation = 0.dp
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .statusBarsPadding()
-                        .padding(horizontal = 20.dp, vertical = 14.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Column {
-                        Text(
-                            "Recent History",
-                            style = MaterialTheme.typography.headlineMedium,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                        Text(
-                            "${recentFiles.size} processed documents",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.55f)
-                        )
-                    }
-
-                    if (recentFiles.isNotEmpty()) {
-                        IconButton(
-                            onClick = { showClearDialog = true },
-                            modifier = Modifier
-                                .size(40.dp)
-                                .clip(CircleShape)
-                                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f))
-                        ) {
-                            Icon(
-                                Icons.Default.DeleteSweep,
-                                contentDescription = "Clear All",
-                                tint = MaterialTheme.colorScheme.error,
-                                modifier = Modifier.size(20.dp)
-                            )
-                        }
-                    }
-                }
-            }
-        }
+        modifier = Modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         if (recentFiles.isEmpty()) {
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(padding),
-                contentAlignment = Alignment.Center
+                    .padding(padding)
+                    .statusBarsPadding()
+                    .padding(horizontal = 20.dp),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
+                RecentHeaderRow(fileCount = 0, onClearClick = null)
+
                 Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.padding(32.dp)
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(88.dp)
+                            .size(92.dp)
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
                         contentAlignment = Alignment.Center
@@ -119,23 +78,28 @@ fun RecentScreen(
                         Icon(
                             Icons.Default.History,
                             contentDescription = null,
-                            modifier = Modifier.size(44.dp),
-                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                            tint = PrimaryRed.copy(alpha = 0.8f),
+                            modifier = Modifier.size(46.dp)
                         )
                     }
+                    Spacer(Modifier.height(16.dp))
                     Text(
                         "Vault is Empty",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                     )
+                    Spacer(Modifier.height(6.dp))
                     Text(
-                        "Documents you merge, compress, protect, or convert will appear here for fast access.",
+                        "Processed documents (merged, compressed, converted, protected) will appear here for instant local retrieval.",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.45f),
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                        modifier = Modifier.padding(horizontal = 24.dp)
                     )
                 }
+
+                Spacer(Modifier.height(100.dp))
             }
         } else {
             LazyColumn(
@@ -145,12 +109,20 @@ fun RecentScreen(
                 contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 120.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
+                item(key = "vault_header") {
+                    RecentHeaderRow(
+                        fileCount = recentFiles.size,
+                        onClearClick = { showClearDialog = true }
+                    )
+                }
+
                 items(recentFiles, key = { it.id }) { file ->
                     RecentFileItem(
                         file = file,
                         onOpen = { openFile(context, file.path) },
                         onShare = { shareFile(context, file.path) },
-                        onDelete = { viewModel.deleteRecentFile(file.id) }
+                        onDelete = { viewModel.deleteRecentFile(file.id) },
+                        modifier = Modifier.animateItem()
                     )
                 }
             }
@@ -161,7 +133,7 @@ fun RecentScreen(
         AlertDialog(
             onDismissRequest = { showClearDialog = false },
             title = { Text("Clear Vault History?", fontWeight = FontWeight.Bold) },
-            text = { Text("This will remove all recent entries from the app history. Your files in Downloads will remain safe on your device.") },
+            text = { Text("This will remove all recent entries from the app history. Your actual PDF files in Downloads will remain safe on your device.") },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -169,12 +141,62 @@ fun RecentScreen(
                         showClearDialog = false
                     },
                     colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
-                ) { Text("Clear All", fontWeight = FontWeight.Bold) }
+                ) {
+                    Text("Clear All", fontWeight = FontWeight.Bold)
+                }
             },
             dismissButton = {
-                TextButton(onClick = { showClearDialog = false }) { Text("Cancel") }
+                TextButton(onClick = { showClearDialog = false }) {
+                    Text("Cancel")
+                }
             }
         )
+    }
+}
+
+@Composable
+fun RecentHeaderRow(
+    fileCount: Int,
+    onClearClick: (() -> Unit)?
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .statusBarsPadding()
+            .padding(horizontal = 4.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column {
+            Text(
+                "Document Vault",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.ExtraBold,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Text(
+                if (fileCount == 0) "No processed files yet" else "$fileCount saved offline documents",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.55f)
+            )
+        }
+
+        if (onClearClick != null) {
+            IconButton(
+                onClick = onClearClick,
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f))
+            ) {
+                Icon(
+                    Icons.Default.DeleteSweep,
+                    contentDescription = "Clear All",
+                    tint = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
     }
 }
 
@@ -183,10 +205,10 @@ fun RecentFileItem(
     file: RecentFileEntity,
     onOpen: () -> Unit,
     onShare: () -> Unit,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    val fileExists = remember(file.path) { File(file.path).exists() }
-    val dateStr = remember(file.lastOpened) {
+    val formattedDate = remember(file.lastOpened) {
         SimpleDateFormat("MMM d, HH:mm", Locale.getDefault()).format(Date(file.lastOpened))
     }
 
@@ -201,7 +223,7 @@ fun RecentFileItem(
     Surface(
         onClick = onOpen,
         interactionSource = interactionSource,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .graphicsLayer {
                 scaleX = scale
@@ -246,51 +268,45 @@ fun RecentFileItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        formatSize(file.sizeBytes),
+                        formatFileSize(file.sizeBytes),
                         style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                     )
                     Text("•", color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f))
                     Text(
-                        dateStr,
+                        formattedDate,
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                     )
                 }
-                file.toolUsed?.let { toolName ->
-                    Spacer(Modifier.height(4.dp))
-                    Surface(
-                        color = PrimaryRed.copy(alpha = 0.08f),
-                        shape = RoundedCornerShape(6.dp)
-                    ) {
-                        Text(
-                            toolName,
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                            style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
-                            color = PrimaryRed,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
             }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                IconButton(onClick = onShare, modifier = Modifier.size(36.dp)) {
-                    Icon(Icons.Default.Share, contentDescription = "Share", modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+            Row {
+                IconButton(onClick = onShare) {
+                    Icon(
+                        Icons.Default.Share,
+                        contentDescription = "Share",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(20.dp)
+                    )
                 }
-                IconButton(onClick = onDelete, modifier = Modifier.size(36.dp)) {
-                    Icon(Icons.Default.DeleteOutline, contentDescription = "Delete", modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f))
+                IconButton(onClick = onDelete) {
+                    Icon(
+                        Icons.Default.DeleteOutline,
+                        contentDescription = "Delete",
+                        tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f),
+                        modifier = Modifier.size(20.dp)
+                    )
                 }
             }
         }
     }
 }
 
-fun formatSize(bytes: Long): String {
+fun formatFileSize(bytes: Long): String {
     return when {
-        bytes < 1024 -> "${bytes}B"
-        bytes < 1024 * 1024 -> "${bytes / 1024}KB"
-        else -> String.format("%.1fMB", bytes / (1024f * 1024f))
+        bytes >= 1024 * 1024 -> String.format("%.1f MB", bytes / (1024f * 1024f))
+        bytes >= 1024 -> "${bytes / 1024} KB"
+        else -> "$bytes B"
     }
 }

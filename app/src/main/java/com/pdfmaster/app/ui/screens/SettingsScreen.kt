@@ -44,33 +44,8 @@ fun SettingsScreen(
     var showAboutDialog by remember { mutableStateOf(false) }
 
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
-        topBar = {
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.background,
-                tonalElevation = 0.dp
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .statusBarsPadding()
-                        .padding(horizontal = 20.dp, vertical = 14.dp)
-                ) {
-                    Text(
-                        "Preferences",
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                    Text(
-                        "Customization & Security",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.55f)
-                    )
-                }
-            }
-        }
+        modifier = Modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -80,6 +55,25 @@ fun SettingsScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
+            // Header integrated into scroll container (no touch deadzones)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding()
+                    .padding(horizontal = 4.dp, vertical = 12.dp)
+            ) {
+                Text(
+                    "Preferences",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                Text(
+                    "Customization & Security",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.55f)
+                )
+            }
             // Appearance Section
             SettingsGroup(title = "Interface") {
                 SettingsSwitchRow(
@@ -130,7 +124,7 @@ fun SettingsScreen(
                 SettingsClickRow(
                     icon = Icons.Default.PictureAsPdf,
                     iconColor = PrimaryRed,
-                    title = "PDF Master v1.0.1",
+                    title = "PDF Master v1.0.2",
                     subtitle = "Open-Source Apache 2.0 License • 120Hz Fluid Motion",
                     onClick = { showAboutDialog = true }
                 )

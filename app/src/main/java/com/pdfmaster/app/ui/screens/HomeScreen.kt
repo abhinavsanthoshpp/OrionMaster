@@ -6,15 +6,14 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -28,13 +27,13 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.pdfmaster.app.data.model.*
 import com.pdfmaster.app.ui.theme.*
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController) {
     var selectedCategory by rememberSaveable { mutableStateOf(ToolCategory.ALL) }
@@ -57,62 +56,78 @@ fun HomeScreen(navController: NavController) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background,
-        topBar = {
-            HomeHeader(
-                searchQuery = searchQuery,
-                onSearchChange = { searchQuery = it },
-                selectedCategory = selectedCategory,
-                onSelectCategory = { selectedCategory = it }
-            )
-        }
+        containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
+        // Entire screen is a single unified high-performance LazyVerticalGrid
+        // No dead zones: touching anywhere up or down scrolls with 100% fluid physics
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             state = gridState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 100.dp),
+            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 120.dp),
             horizontalArrangement = Arrangement.spacedBy(14.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            // Show Featured Bento Section only when on ALL tab and no search
+            // 1. Premium Brand Header with Master Logo & Status Badge
+            item(span = { GridItemSpan(2) }, key = "header_brand") {
+                HomeBrandHeader()
+            }
+
+            // 2. Interactive Search Bar with instant clear
+            item(span = { GridItemSpan(2) }, key = "header_search") {
+                HomeSearchBar(
+                    searchQuery = searchQuery,
+                    onSearchChange = { searchQuery = it }
+                )
+            }
+
+            // 3. Smooth Horizontal Category Filter Pills
+            item(span = { GridItemSpan(2) }, key = "header_categories") {
+                HomeCategoryRow(
+                    selectedCategory = selectedCategory,
+                    onSelectCategory = { selectedCategory = it }
+                )
+            }
+
+            // 4. Featured Bento Section (Shown when no search is active)
             if (selectedCategory == ToolCategory.ALL && searchQuery.isEmpty()) {
-                item(span = { GridItemSpan(2) }, key = "featured_header") {
+                item(span = { GridItemSpan(2) }, key = "featured_title") {
                     SectionHeader(
                         title = "Essential Tools",
-                        subtitle = "Most used PDF actions"
+                        subtitle = "Most used PDF actions • Instant processing"
                     )
                 }
 
-                // 2 Large Featured Bento Cards
                 items(PDFTools.featuredTools, key = { "featured_${it.id}" }, span = { GridItemSpan(1) }) { tool ->
                     FeaturedBentoCard(
                         tool = tool,
-                        onClick = { navController.navigate(tool.route) }
+                        onClick = { navController.navigate(tool.route) },
+                        modifier = Modifier.animateItem()
                     )
                 }
 
-                item(span = { GridItemSpan(2) }, key = "all_tools_header") {
-                    Spacer(Modifier.height(8.dp))
+                item(span = { GridItemSpan(2) }, key = "all_tools_title") {
+                    Spacer(Modifier.height(4.dp))
                     SectionHeader(
                         title = "All Utilities",
-                        subtitle = "100% on-device • Instant processing"
+                        subtitle = "100% on-device • Zero network traffic"
                     )
                 }
             }
 
-            // Normal Tools Grid
+            // 5. Utility Cards Grid
             if (filteredTools.isEmpty()) {
-                item(span = { GridItemSpan(2) }, key = "empty_search") {
+                item(span = { GridItemSpan(2) }, key = "empty_placeholder") {
                     EmptySearchPlaceholder(searchQuery = searchQuery)
                 }
             } else {
                 items(filteredTools, key = { it.id }) { tool ->
                     ModernToolCard(
                         tool = tool,
-                        onClick = { navController.navigate(tool.route) }
+                        onClick = { navController.navigate(tool.route) },
+                        modifier = Modifier.animateItem()
                     )
                 }
             }
@@ -120,162 +135,214 @@ fun HomeScreen(navController: NavController) {
     }
 }
 
-// ===================== HEADER & SEARCH =====================
+// ===================== PREMIUM BRAND HEADER =====================
 @Composable
-fun HomeHeader(
+fun HomeBrandHeader() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .statusBarsPadding()
+            .padding(horizontal = 4.dp, vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            PDFMasterLogo(size = 46.dp)
+            Spacer(Modifier.width(12.dp))
+            Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = "PDF",
+                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 24.sp),
+                        fontWeight = FontWeight.ExtraBold,
+                        color = PrimaryRed
+                    )
+                    Spacer(Modifier.width(4.dp))
+                    Text(
+                        text = "Master",
+                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 24.sp),
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+                Text(
+                    text = "100% On-Device • Zero Cloud",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.55f),
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        }
+
+        // Luxury Security Pill
+        Surface(
+            color = AccentGreen.copy(alpha = 0.12f),
+            shape = RoundedCornerShape(12.dp),
+            border = BorderStroke(1.dp, AccentGreen.copy(alpha = 0.35f))
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(8.dp)
+                        .clip(CircleShape)
+                        .background(AccentGreen)
+                )
+                Text(
+                    "Private Vault",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = AccentGreen,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+    }
+}
+
+// ===================== PREMIUM VECTOR APP LOGO =====================
+@Composable
+fun PDFMasterLogo(modifier: Modifier = Modifier, size: Dp = 46.dp) {
+    Box(
+        modifier = modifier
+            .size(size)
+            .shadow(10.dp, RoundedCornerShape(13.dp), spotColor = PrimaryRed.copy(alpha = 0.5f))
+            .clip(RoundedCornerShape(13.dp))
+            .background(
+                Brush.linearGradient(
+                    listOf(Color(0xFF181D2B), Color(0xFF090B10))
+                )
+            )
+            .border(1.dp, Color(0xFF38435E).copy(alpha = 0.6f), RoundedCornerShape(13.dp)),
+        contentAlignment = Alignment.Center
+    ) {
+        // Document Sheet Base
+        Box(
+            modifier = Modifier
+                .size(size * 0.68f)
+                .clip(RoundedCornerShape(5.dp))
+                .background(Color(0xFFF8FAFC))
+        ) {
+            // Folded Crimson Corner
+            Box(
+                modifier = Modifier
+                    .size(size * 0.22f)
+                    .align(Alignment.TopEnd)
+                    .background(
+                        Brush.linearGradient(
+                            listOf(Color(0xFFFF8A00), PrimaryRed)
+                        )
+                    )
+            )
+
+            // Red Binding Ribbon (Left)
+            Box(
+                modifier = Modifier
+                    .width(size * 0.12f)
+                    .fillMaxHeight()
+                    .align(Alignment.CenterStart)
+                    .background(
+                        Brush.verticalGradient(
+                            listOf(PrimaryRed, PrimaryCoral)
+                        )
+                    )
+            )
+
+            // Stylized Icon Emblem in center
+            Icon(
+                imageVector = Icons.Default.PictureAsPdf,
+                contentDescription = null,
+                tint = PrimaryRed,
+                modifier = Modifier
+                    .size(size * 0.38f)
+                    .align(Alignment.Center)
+                    .padding(start = 2.dp)
+            )
+        }
+    }
+}
+
+// ===================== SEARCH BAR =====================
+@Composable
+fun HomeSearchBar(
     searchQuery: String,
-    onSearchChange: (String) -> Unit,
-    selectedCategory: ToolCategory,
-    onSelectCategory: (ToolCategory) -> Unit
+    onSearchChange: (String) -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.background,
-        tonalElevation = 0.dp
+        shape = RoundedCornerShape(20.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.25f))
     ) {
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .statusBarsPadding()
-                .padding(top = 12.dp)
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            // Top App Bar Row
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 6.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = "PDF",
-                            style = MaterialTheme.typography.headlineMedium,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = PrimaryRed
-                        )
-                        Spacer(Modifier.width(4.dp))
-                        Text(
-                            text = "Master",
-                            style = MaterialTheme.typography.headlineMedium,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                    }
+            Icon(
+                Icons.Default.Search,
+                contentDescription = "Search",
+                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(Modifier.width(12.dp))
+            Box(modifier = Modifier.weight(1f)) {
+                if (searchQuery.isEmpty()) {
                     Text(
-                        text = "Private • Local Vault • Zero Cloud",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.55f),
+                        "Search 20+ PDF tools…",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                    )
+                }
+                BasicTextField(
+                    value = searchQuery,
+                    onValueChange = onSearchChange,
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    textStyle = MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.Medium
                     )
-                }
-
-                // Security Shield Badge
-                Surface(
-                    color = AccentGreen.copy(alpha = 0.12f),
-                    shape = RoundedCornerShape(12.dp),
-                    border = BorderStroke(1.dp, AccentGreen.copy(alpha = 0.3f))
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(8.dp)
-                                .clip(CircleShape)
-                                .background(AccentGreen)
-                        )
-                        Text(
-                            "Offline",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = AccentGreen,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
+                )
             }
-
-            Spacer(Modifier.height(10.dp))
-
-            // Search Bar
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                shape = RoundedCornerShape(22.dp),
-                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.25f))
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 12.dp),
-                    verticalAlignment = Alignment.CenterVertically
+            if (searchQuery.isNotEmpty()) {
+                IconButton(
+                    onClick = { onSearchChange("") },
+                    modifier = Modifier.size(24.dp)
                 ) {
                     Icon(
-                        Icons.Default.Search,
-                        contentDescription = "Search",
-                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(Modifier.width(12.dp))
-                    Box(modifier = Modifier.weight(1f)) {
-                        if (searchQuery.isEmpty()) {
-                            Text(
-                                "Search 20+ PDF tools…",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
-                            )
-                        }
-                        BasicTextField(
-                            value = searchQuery,
-                            onValueChange = onSearchChange,
-                            modifier = Modifier.fillMaxWidth(),
-                            singleLine = true,
-                            textStyle = MaterialTheme.typography.bodyMedium.copy(
-                                color = MaterialTheme.colorScheme.onSurface,
-                                fontWeight = FontWeight.Medium
-                            )
-                        )
-                    }
-                    if (searchQuery.isNotEmpty()) {
-                        IconButton(
-                            onClick = { onSearchChange("") },
-                            modifier = Modifier.size(24.dp)
-                        ) {
-                            Icon(
-                                Icons.Default.Close,
-                                contentDescription = "Clear",
-                                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                                modifier = Modifier.size(16.dp)
-                            )
-                        }
-                    }
-                }
-            }
-
-            Spacer(Modifier.height(12.dp))
-
-            // Smooth Horizontal Category Chips
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(ToolCategory.values()) { category ->
-                    val isSelected = selectedCategory == category
-                    CategoryFilterChip(
-                        category = category,
-                        isSelected = isSelected,
-                        onClick = { onSelectCategory(category) }
+                        Icons.Default.Close,
+                        contentDescription = "Clear",
+                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                        modifier = Modifier.size(16.dp)
                     )
                 }
             }
+        }
+    }
+}
 
-            Spacer(Modifier.height(4.dp))
+// ===================== CATEGORY SELECTOR ROW =====================
+@Composable
+fun HomeCategoryRow(
+    selectedCategory: ToolCategory,
+    onSelectCategory: (ToolCategory) -> Unit
+) {
+    val categories = remember { ToolCategory.entries }
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(categories, key = { it.name }) { category ->
+            val isSelected = selectedCategory == category
+            CategoryFilterChip(
+                category = category,
+                isSelected = isSelected,
+                onClick = { onSelectCategory(category) }
+            )
         }
     }
 }
@@ -336,13 +403,14 @@ fun SectionHeader(title: String, subtitle: String) {
 @Composable
 fun FeaturedBentoCard(
     tool: PDFTool,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val toolColor = Color(tool.colorHex)
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.96f else 1f,
+        targetValue = if (isPressed) 0.95f else 1f,
         animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
         label = "bento_scale"
     )
@@ -350,9 +418,9 @@ fun FeaturedBentoCard(
     Surface(
         onClick = onClick,
         interactionSource = interactionSource,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .height(130.dp)
+            .height(132.dp)
             .graphicsLayer {
                 scaleX = scale
                 scaleY = scale
@@ -360,7 +428,7 @@ fun FeaturedBentoCard(
         shape = RoundedCornerShape(22.dp),
         color = MaterialTheme.colorScheme.surface,
         border = BorderStroke(1.dp, toolColor.copy(alpha = 0.25f)),
-        shadowElevation = 3.dp
+        shadowElevation = 2.dp
     ) {
         Column(
             modifier = Modifier
@@ -435,7 +503,8 @@ fun FeaturedBentoCard(
 @Composable
 fun ModernToolCard(
     tool: PDFTool,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val toolColor = Color(tool.colorHex)
     val interactionSource = remember { MutableInteractionSource() }
@@ -449,9 +518,9 @@ fun ModernToolCard(
     Surface(
         onClick = onClick,
         interactionSource = interactionSource,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .height(115.dp)
+            .height(118.dp)
             .graphicsLayer {
                 scaleX = scale
                 scaleY = scale
@@ -505,7 +574,7 @@ fun ModernToolCard(
     }
 }
 
-// ===================== EMPTY PLACEHOLDER =====================
+// ===================== EMPTY SEARCH PLACEHOLDER =====================
 @Composable
 fun EmptySearchPlaceholder(searchQuery: String) {
     Column(
