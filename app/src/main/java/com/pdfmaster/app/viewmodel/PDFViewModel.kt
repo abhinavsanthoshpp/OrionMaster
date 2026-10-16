@@ -232,7 +232,7 @@ class PDFViewModel(application: Application) : AndroidViewModel(application) {
     fun pdfToJpg(uri: Uri, dpi: Int = 150) {
         viewModelScope.launch {
             setLoading(true, "Converting to images…")
-            val outputDir = FileUtils.getOutputDir(context, "PDFMaster/Images")
+            val outputDir = FileUtils.getOutputDir(context, "OrionMaster/Images")
             val fileName = FileUtils.getFileName(context, uri)
             val result = PDFProcessor.pdfToJpg(context, uri, outputDir, fileName, dpi) { done, total ->
                 _uiState.update { it.copy(progress = done, totalSteps = total) }
@@ -262,6 +262,30 @@ class PDFViewModel(application: Application) : AndroidViewModel(application) {
             val fileName = FileUtils.getFileName(context, uri)
             val outputFile = FileUtils.createOutputFile(outputDir, "${fileName}_organized")
             val result = PDFProcessor.reorderPages(context, uri, outputFile, newOrder)
+            setResult(result)
+        }
+    }
+
+    // ===================== SIGN PDF =====================
+    fun signPDF(uri: Uri, signatureBitmap: android.graphics.Bitmap, pageIndex: Int = 0) {
+        viewModelScope.launch {
+            setLoading(true, "Placing signature…")
+            val outputDir = FileUtils.getOutputDir(context)
+            val fileName = FileUtils.getFileName(context, uri)
+            val outputFile = FileUtils.createOutputFile(outputDir, "${fileName}_signed")
+            val result = PDFProcessor.signPDF(context, uri, outputFile, signatureBitmap, pageIndex)
+            setResult(result)
+        }
+    }
+
+    // ===================== CROP PDF =====================
+    fun cropPDF(uri: Uri, marginPercent: Float = 0.1f) {
+        viewModelScope.launch {
+            setLoading(true, "Cropping margins…")
+            val outputDir = FileUtils.getOutputDir(context)
+            val fileName = FileUtils.getFileName(context, uri)
+            val outputFile = FileUtils.createOutputFile(outputDir, "${fileName}_cropped")
+            val result = PDFProcessor.cropPDF(context, uri, outputFile, marginPercent)
             setResult(result)
         }
     }

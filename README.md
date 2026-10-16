@@ -1,18 +1,18 @@
 <div align="center">
-  <img src="docs/assets/logo.svg" width="128" height="128" alt="PDF Master Logo" />
-  <h1>PDF Master</h1>
+  <img src="docs/assets/logo.svg" width="128" height="128" alt="Orion Master Logo" />
+  <h1>Orion Master</h1>
   <p><b>The Private, 100% Free Open-Source PDF Manager for Android</b></p>
 </div>
 
-[![Release](https://img.shields.io/github/v/release/abhinavsanthoshpp/PDFMaster?style=for-the-badge&color=43A047)](https://github.com/abhinavsanthoshpp/PDFMaster/releases/tag/v1.0.2)
-[![Website](https://img.shields.io/badge/Website-Live_Showcase-E53935?style=for-the-badge&logo=googlechrome&logoColor=white)](https://abhinavsanthoshpp.github.io/PDFMaster/)
-[![GitHub Repo](https://img.shields.io/badge/GitHub-PDFMaster-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/abhinavsanthoshpp/PDFMaster)
+[![Release](https://img.shields.io/github/v/release/abhinavsanthoshpp/OrionMaster?style=for-the-badge&color=43A047)](https://github.com/abhinavsanthoshpp/OrionMaster/releases/tag/v1.0.3)
+[![Website](https://img.shields.io/badge/Website-Live_Showcase-E53935?style=for-the-badge&logo=googlechrome&logoColor=white)](https://abhinavsanthoshpp.github.io/OrionMaster/)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-OrionMaster-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/abhinavsanthoshpp/OrionMaster)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=for-the-badge)](LICENSE)
 
 An open-source, native Android PDF managing & viewing application inspired by **iLovePDF**, rebuilt from the ground up for privacy, zero account requirements, and 100% on-device processing.
 
-📦 **Download APK (v1.0.2)**: [PDFMaster-v1.0.2-debug.apk](https://github.com/abhinavsanthoshpp/PDFMaster/releases/download/v1.0.2/PDFMaster-v1.0.2-debug.apk)  
-🌐 **Live Website**: [https://abhinavsanthoshpp.github.io/PDFMaster/](https://abhinavsanthoshpp.github.io/PDFMaster/)
+📦 **Download APK (v1.0.3)**: [OrionMaster-v1.0.3-debug.apk](https://github.com/abhinavsanthoshpp/OrionMaster/releases/download/v1.0.2/OrionMaster-v1.0.3-debug.apk)  
+🌐 **Live Website**: [https://abhinavsanthoshpp.github.io/OrionMaster/](https://abhinavsanthoshpp.github.io/OrionMaster/)
 
 ---
 
@@ -25,9 +25,9 @@ An open-source, native Android PDF managing & viewing application inspired by **
 
 ---
 
-## 🛠️ Feature Comparison Matrix: iLovePDF vs PDF Master
+## 🛠️ Feature Comparison Matrix: iLovePDF vs Orion Master
 
-| Feature / Aspect | iLovePDF (Web / Official App) | **PDF Master (This App)** |
+| Feature / Aspect | iLovePDF (Web / Official App) | **Orion Master (This App)** |
 | :--- | :--- | :--- |
 | **Account & Login** | Requires sign-up/login for higher quotas | **Zero login / No account needed** |
 | **File Privacy** | Uploads files to cloud servers | **100% On-device, Zero cloud upload** |

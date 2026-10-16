@@ -39,14 +39,14 @@ jobs:
       - name: Prepare Release Artifacts
         run: |
           mkdir -p release-artifacts
-          TAG="${GITHUB_REF_NAME:-v1.0.1}"
-          cp app/build/outputs/apk/debug/app-debug.apk "release-artifacts/PDFMaster-${TAG}-debug.apk"
-          cp app/build/outputs/apk/debug/app-debug.apk "release-artifacts/PDFMaster-latest-debug.apk"
+          TAG="${GITHUB_REF_NAME:-v1.0.3}"
+          cp app/build/outputs/apk/debug/app-debug.apk "release-artifacts/OrionMaster-${TAG}-debug.apk"
+          cp app/build/outputs/apk/debug/app-debug.apk "release-artifacts/OrionMaster-latest-debug.apk"
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: PDFMaster-debug-apk
+          name: OrionMaster-debug-apk
           path: release-artifacts/*.apk
 
       - name: Upload to GitHub Release

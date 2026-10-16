@@ -61,7 +61,7 @@ fun CompressPDFScreen(navController: NavController, viewModel: PDFViewModel = vi
                         }
                     }
                 }
-                InfoCard("Output saved to Downloads/PDFMaster", CompressPDFColor)
+                InfoCard("Output saved to Downloads/OrionMaster & Vault", CompressPDFColor)
                 ProcessButton("Compress PDF", uiState.isLoading, !uiState.isLoading, CompressPDFColor) {
                     viewModel.compressPDF(uiState.selectedUri!!, selectedQuality)
                 }

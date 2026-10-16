@@ -103,7 +103,7 @@ fun SettingsScreen(
                     icon = Icons.Default.FolderOpen,
                     iconColor = AccentOrange,
                     title = "Download Location",
-                    subtitle = "Downloads/PDFMaster",
+                    subtitle = "Downloads/OrionMaster",
                     onClick = { }
                 )
                 HorizontalDivider(
@@ -124,7 +124,7 @@ fun SettingsScreen(
                 SettingsClickRow(
                     icon = Icons.Default.PictureAsPdf,
                     iconColor = PrimaryRed,
-                    title = "PDF Master v1.0.2",
+                    title = "Orion Master v1.0.3",
                     subtitle = "Open-Source Apache 2.0 License • 120Hz Fluid Motion",
                     onClick = { showAboutDialog = true }
                 )
@@ -211,10 +211,10 @@ fun SettingsScreen(
                     Icon(Icons.Default.PictureAsPdf, contentDescription = null, tint = Color.White, modifier = Modifier.size(32.dp))
                 }
             },
-            title = { Text("PDF Master", fontWeight = FontWeight.ExtraBold) },
+            title = { Text("Orion Master", fontWeight = FontWeight.ExtraBold) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("Version 1.0.0 • Open Source")
+                    Text("Version 1.0.3 • Open Source")
                     Text("The private, 100% on-device PDF management suite designed as a modern alternative to cloud-based PDF tools.")
                     HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f), modifier = Modifier.padding(vertical = 4.dp))
                     Text("Engineered with:", fontWeight = FontWeight.Bold)

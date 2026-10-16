@@ -35,7 +35,11 @@ import com.pdfmaster.app.data.model.*
 import com.pdfmaster.app.ui.theme.*
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(
+    navController: NavController,
+    isDarkMode: Boolean = false,
+    onToggleDarkMode: (Boolean) -> Unit = {}
+) {
     var selectedCategory by rememberSaveable { mutableStateOf(ToolCategory.ALL) }
     var searchQuery by rememberSaveable { mutableStateOf("") }
     val gridState = rememberLazyGridState()
@@ -70,9 +74,12 @@ fun HomeScreen(navController: NavController) {
             horizontalArrangement = Arrangement.spacedBy(14.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            // 1. Premium Brand Header with Master Logo & Status Badge
+            // 1. Premium Brand Header with Orion Logo, Theme Toggle & Status Badge
             item(span = { GridItemSpan(2) }, key = "header_brand") {
-                HomeBrandHeader()
+                HomeBrandHeader(
+                    isDarkMode = isDarkMode,
+                    onToggleDarkMode = onToggleDarkMode
+                )
             }
 
             // 2. Interactive Search Bar with instant clear
@@ -137,7 +144,10 @@ fun HomeScreen(navController: NavController) {
 
 // ===================== PREMIUM BRAND HEADER =====================
 @Composable
-fun HomeBrandHeader() {
+fun HomeBrandHeader(
+    isDarkMode: Boolean,
+    onToggleDarkMode: (Boolean) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -147,12 +157,12 @@ fun HomeBrandHeader() {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            PDFMasterLogo(size = 46.dp)
+            OrionMasterLogo(size = 46.dp)
             Spacer(Modifier.width(12.dp))
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "PDF",
+                        text = "Orion",
                         style = MaterialTheme.typography.headlineMedium.copy(fontSize = 24.sp),
                         fontWeight = FontWeight.ExtraBold,
                         color = PrimaryRed
@@ -174,29 +184,52 @@ fun HomeBrandHeader() {
             }
         }
 
-        // Luxury Security Pill
-        Surface(
-            color = AccentGreen.copy(alpha = 0.12f),
-            shape = RoundedCornerShape(12.dp),
-            border = BorderStroke(1.dp, AccentGreen.copy(alpha = 0.35f))
+        // Header Actions: Theme Toggle + Private Vault Pill
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Row(
-                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            // Theme Toggle Directly on Home Screen
+            IconButton(
+                onClick = { onToggleDarkMode(!isDarkMode) },
+                modifier = Modifier
+                    .size(38.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.65f))
+                    .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.25f), CircleShape)
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(8.dp)
-                        .clip(CircleShape)
-                        .background(AccentGreen)
+                Icon(
+                    imageVector = if (isDarkMode) Icons.Default.LightMode else Icons.Default.DarkMode,
+                    contentDescription = "Toggle Theme",
+                    tint = if (isDarkMode) AccentAmber else PrimaryRed,
+                    modifier = Modifier.size(20.dp)
                 )
-                Text(
-                    "Private Vault",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = AccentGreen,
-                    fontWeight = FontWeight.Bold
-                )
+            }
+
+            // Luxury Security Pill
+            Surface(
+                color = AccentGreen.copy(alpha = 0.12f),
+                shape = RoundedCornerShape(12.dp),
+                border = BorderStroke(1.dp, AccentGreen.copy(alpha = 0.35f))
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 9.dp, vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(7.dp)
+                            .clip(CircleShape)
+                            .background(AccentGreen)
+                    )
+                    Text(
+                        "Vault",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = AccentGreen,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
     }
@@ -204,7 +237,7 @@ fun HomeBrandHeader() {
 
 // ===================== PREMIUM VECTOR APP LOGO =====================
 @Composable
-fun PDFMasterLogo(modifier: Modifier = Modifier, size: Dp = 46.dp) {
+fun OrionMasterLogo(modifier: Modifier = Modifier, size: Dp = 46.dp) {
     Box(
         modifier = modifier
             .size(size)

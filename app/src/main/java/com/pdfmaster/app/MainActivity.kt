@@ -109,7 +109,11 @@ fun PDFMasterApp(
         ) {
             // Main tabs
             composable(Screen.Home.route) {
-                HomeScreen(navController = navController)
+                HomeScreen(
+                    navController = navController,
+                    isDarkMode = isDarkMode,
+                    onToggleDarkMode = onToggleDarkMode
+                )
             }
             composable(Screen.Recent.route) {
                 RecentScreen(navController = navController, viewModel = viewModel)
@@ -173,7 +177,7 @@ fun PDFMasterApp(
                 EditPDFScreen(navController = navController)
             }
             composable(Screen.CropPDF.route) {
-                CropPDFScreen(navController = navController)
+                CropPDFScreen(navController = navController, viewModel = viewModel)
             }
 
             // Security Tools
@@ -184,7 +188,7 @@ fun PDFMasterApp(
                 UnlockPDFScreen(navController = navController, viewModel = viewModel)
             }
             composable(Screen.SignPDF.route) {
-                SignPDFScreen(navController = navController)
+                SignPDFScreen(navController = navController, viewModel = viewModel)
             }
             composable(Screen.ComparePDF.route) {
                 ComparePDFScreen(navController = navController)
