@@ -1,0 +1,4 @@
+-keep class com.tom_roush.** { *; }
+-keep class org.apache.** { *; }
+-dontwarn org.apache.**
+-dontwarn com.tom_roush.**
