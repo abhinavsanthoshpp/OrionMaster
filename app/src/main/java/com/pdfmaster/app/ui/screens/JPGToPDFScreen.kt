@@ -49,7 +49,7 @@ fun JPGToPDFScreen(navController: NavController, viewModel: PDFViewModel = viewM
             modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp).verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            AddFileButton("Add Images", JPGtoPDFColor) { launcher.launch("image/*") }
+            AddFileButton("Add Images", JPGtoPDFColor, onClick = { launcher.launch("image/*") })
 
             if (selectedUris.isNotEmpty()) {
                 Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {

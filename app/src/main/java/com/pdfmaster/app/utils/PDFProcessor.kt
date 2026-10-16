@@ -272,10 +272,12 @@ object PDFProcessor {
                             val ty = pageHeight / 2
 
                             val radians = Math.toRadians(rotation.toDouble())
+                            val cos = Math.cos(radians).toFloat()
+                            val sin = Math.sin(radians).toFloat()
                             transform(
-                                com.tom_roush.harmony.awt.geom.AffineTransform(
-                                    Math.cos(radians).toFloat(), Math.sin(radians).toFloat(),
-                                    -Math.sin(radians).toFloat(), Math.cos(radians).toFloat(),
+                                com.tom_roush.pdfbox.util.Matrix(
+                                    cos, sin,
+                                    -sin, cos,
                                     tx, ty
                                 )
                             )
